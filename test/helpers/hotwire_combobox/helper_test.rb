@@ -116,9 +116,20 @@ class HotwireCombobox::HelperTest < ApplicationViewTestCase
       combobox_tag :foo, multiselect_chip_src: "some_path", name_when_new: :bar
     end
 
+    assert_raises ActiveModel::ValidationError do
+      form_with scope: :foo, url: "some_path" do |form|
+        form.combobox :bar, multiselect_chip_src: "some_path", name_when_new: "foo[baz]"
+      end
+    end
+
     assert_nothing_raised do
       combobox_tag :foo, multiselect_chip_src: "some_path", name_when_new: :foo
       combobox_tag :foo, multiselect_chip_src: "some_path", free_text: true
+
+      form_with scope: :foo, url: "some_path" do |form|
+        form.combobox :bar, multiselect_chip_src: "some_path", name_when_new: "foo[bar]"
+        form.combobox :bar, multiselect_chip_src: "some_path", free_text: true
+      end
     end
   end
 
@@ -146,5 +157,13 @@ class HotwireCombobox::HelperTest < ApplicationViewTestCase
     html = hw_paginated_combobox_options [], next_page: 2
 
     assert_attrs html, tag_name: "turbo-frame", src: "/foo?bar=baz&qux=quux&page=2&format=turbo_stream"
+  end
+
+  test "single repeating character values" do
+    form = form_with model: OpenStruct.new(run_at: "* * * * *", persisted?: true, model_name: OpenStruct.new(param_key: :foo)), url: "#" do |form|
+      form.combobox :run_at, [ "@hourly", "@daily", "@weekly", "@monthly", "@every 4h", "0 12 * * *" ], free_text: true
+    end
+
+    assert_equal "* * * * *", Nokogiri::HTML(form).css("input[name='foo[run_at]']").first.attr("value")
   end
 end
