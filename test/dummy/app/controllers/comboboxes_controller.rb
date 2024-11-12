@@ -43,6 +43,9 @@ class ComboboxesController < ApplicationController
     @user = User.first || raise("No user found, load fixtures first.")
   end
 
+  def prefilled_free_text
+  end
+
   def prefilled_html
   end
 
@@ -100,6 +103,13 @@ class ComboboxesController < ApplicationController
 
   def form_object
     @object = Form.new
+  end
+
+  def external_clear
+    @user = User.first || raise("No user found, load fixtures first.")
+  end
+
+  def dialog
   end
 
   private
