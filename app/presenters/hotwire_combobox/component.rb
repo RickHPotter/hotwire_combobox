@@ -4,7 +4,7 @@ class HotwireCombobox::Component
   include Announced, Associations, Async, Customizable, Freetext, Multiselect, Paginated
 
   # Markup modules depend on Customizable
-  include Markup::Dialog, Markup::Fieldset, Markup::Form, Markup::Handle,
+  include Markup::Dialog, Markup::Fieldset, Markup::Form, Markup::Handle, Markup::Icon,
     Markup::HiddenField, Markup::Input, Markup::Label, Markup::Listbox, Markup::Wrapper
 
   attr_reader :options, :label

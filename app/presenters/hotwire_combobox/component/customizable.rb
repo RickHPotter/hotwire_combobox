@@ -3,6 +3,7 @@ module HotwireCombobox::Component::Customizable
     dialog dialog_input dialog_label dialog_listbox dialog_wrapper
     fieldset
     handle
+    icon
     hidden_field
     input
     label
