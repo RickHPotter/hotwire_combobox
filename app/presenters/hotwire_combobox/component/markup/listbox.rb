@@ -3,6 +3,7 @@ module HotwireCombobox::Component::Markup::Listbox
     customize :listbox, base: {
       id: listbox_id, role: :listbox, hidden: "",
       class: "hw-combobox__listbox",
+      tabIndex: -1,
       data: { hw_combobox_target: "listbox" },
       aria: { multiselectable: multiselect? } }
   end
