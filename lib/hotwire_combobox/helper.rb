@@ -16,7 +16,7 @@ module HotwireCombobox
 
     def hw_combobox_tag(name, options_or_src = [], render_in: {}, include_blank: nil, **kwargs, &block)
       options, src = hw_extract_options_and_src options_or_src, render_in, include_blank
-      component = HotwireCombobox::Component.new self, name, options: options, async_src: src, **kwargs
+      component = HotwireCombobox::Component.new self, name, options: options, async_src: src, request: request, **kwargs
       render component, &block
     end
 
@@ -25,7 +25,7 @@ module HotwireCombobox
     end
 
     def hw_paginated_combobox_options(options, for_id: params[:for_id], src: hw_fullpath_for_pagination, next_page: nil, render_in: {}, include_blank: {}, **custom_methods)
-      include_blank = params[:page].to_i > 0 ? nil : include_blank
+      include_blank = hw_first_page? ? include_blank : nil
       options = hw_combobox_options options, render_in: render_in, include_blank: include_blank, **custom_methods
       this_page = render "hotwire_combobox/paginated_options", for_id: for_id, options: options
       next_page = render "hotwire_combobox/next_page", for_id: for_id, src: hw_combobox_next_page_uri(src, next_page, for_id)
@@ -106,13 +106,17 @@ module HotwireCombobox
       end
 
       def hw_combobox_page_stream_action
-        params[:page].to_i > 0 ? :append : :update
+        hw_first_page? ? :update : :append
+      end
+
+      def hw_first_page?
+        params[:page].to_i.zero?
       end
 
       def hw_uri_with_params(url_or_path, **params)
         URI.parse(url_or_path).tap do |url_or_path|
-          query = URI.decode_www_form(url_or_path.query || "").to_h.merge(params.compact_blank.stringify_keys)
-          url_or_path.query = URI.encode_www_form query
+          query = Rack::Utils.parse_nested_query(url_or_path.query || "").merge(params.compact_blank.stringify_keys)
+          url_or_path.query = Rack::Utils.build_nested_query query
         end.to_s
       rescue URI::InvalidURIError
         url_or_path

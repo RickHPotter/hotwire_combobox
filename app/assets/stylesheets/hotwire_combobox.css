@@ -1,6 +1,7 @@
 :root {
   --hw-active-bg-color: #F3F4F6;
   --hw-border-color: #D1D5DB;
+  --hw-component-bg-color: #FFFFFF;
   --hw-group-color: #57595C;
   --hw-group-bg-color: #FFFFFF;
   --hw-invalid-color: #EF4444;
@@ -22,7 +23,7 @@
   --hw-dialog-label-size: 1.05rem;
   --hw-dialog-listbox-margin: 1.25rem 0 0;
   --hw-dialog-padding: 1rem 1rem 0;
-  --hw-dialog-top-offset: 4rem;
+  --hw-dialog-top-offset: 18vh;
 
   --hw-font-size: 1rem;
 
@@ -67,6 +68,7 @@
 }
 
 .hw-combobox__main__wrapper {
+  background-color: var(--hw-component-bg-color);
   border: var(--hw-border-width--slim) solid var(--hw-border-color);
   border-radius: var(--hw-border-radius);
   padding: var(--hw-padding--slim) calc(var(--hw-handle-width) + var(--hw-padding--slimmer)) var(--hw-padding--slim) var(--hw-padding--thick);
@@ -226,7 +228,7 @@
   overflow: hidden;
   padding: var(--hw-dialog-padding);
   pointer-events: auto;
-  position: absolute;
+  position: fixed;
   top: var(--hw-dialog-top-offset);
   width: auto;
 
@@ -239,6 +241,10 @@
 
   &::backdrop {
     background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.6) 50%, white 50%);
+  }
+
+  .hw-combobox--ios & {
+    position: absolute;
   }
 }
 
@@ -316,4 +322,8 @@
 
 .hw_combobox__pagination__wrapper {
   background-color: var(--hw-option-bg-color);
+
+  &:only-child {
+    background-color: transparent;
+  }
 }

@@ -24,9 +24,8 @@ Combobox.Toggle = Base => class extends Base {
 
       this.expandedValue = false
 
-      this._dispatchSelectionEvent()
-
       if (inputType != "hw:keyHandler:escape") {
+        this._dispatchSelectionEvent()
         this._createChip(shouldReopen)
       }
 
@@ -121,6 +120,7 @@ Combobox.Toggle = Base => class extends Base {
     this._preventFocusingComboboxAfterClosingDialog()
     this._preventBodyScroll()
     this.dialogTarget.showModal()
+    this._resizeDialog()
   }
 
   _openInline() {

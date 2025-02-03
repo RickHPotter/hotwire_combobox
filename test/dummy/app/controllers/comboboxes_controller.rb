@@ -4,6 +4,9 @@ class ComboboxesController < ApplicationController
   def plain
   end
 
+  def padded
+  end
+
   def open
   end
 
@@ -29,6 +32,9 @@ class ComboboxesController < ApplicationController
   end
 
   def async
+  end
+
+  def async_preload
   end
 
   def freetext_async
