@@ -13,6 +13,7 @@ Rails.application.routes.draw do
   get "freetext_async", to: "comboboxes#freetext_async"
   get "prefilled_async", to: "comboboxes#prefilled_async"
   get "prefilled_form", to: "comboboxes#prefilled_form"
+  get "prefilled_free_text", to: "comboboxes#prefilled_free_text"
   get "async_html", to: "comboboxes#async_html"
   get "render_in", to: "comboboxes#render_in"
   get "enum", to: "comboboxes#enum"
@@ -30,6 +31,8 @@ Rails.application.routes.draw do
   get "grouped_options", to: "comboboxes#grouped_options"
   get "morph", to: "comboboxes#morph"
   get "form_object", to: "comboboxes#form_object"
+  get "external_clear", to: "comboboxes#external_clear"
+  get "dialog", to: "comboboxes#dialog"
 
   resources :movies, only: %i[ index update ]
   get "movies_html", to: "movies#index_html"

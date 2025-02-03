@@ -14,6 +14,12 @@ Combobox.Filtering = Base => class extends Base {
     }
   }
 
+  clear(event) {
+    this._clearQuery()
+    this.chipDismisserTargets.forEach(el => el.click())
+    if (event && !event.defaultPrevented) event.target.focus()
+  }
+
   _initializeFiltering() {
     this._debouncedFilterAsync = debounce(this._debouncedFilterAsync.bind(this))
   }
@@ -36,19 +42,15 @@ Combobox.Filtering = Base => class extends Base {
     const query = {
       q: this._fullQuery,
       input_type: inputType,
-      for_id: this.element.dataset.asyncId
+      for_id: this.element.dataset.asyncId,
+      callback_id: this._enqueueCallback()
     }
 
     await get(this.asyncSrcValue, { responseKind: "turbo-stream", query })
   }
 
   _filterSync() {
-    this._allFilterableOptionElements.forEach(
-      applyFilter(
-        this._fullQuery,
-        { matching: this.filterableAttributeValue }
-      )
-    )
+    this._allFilterableOptionElements.forEach(applyFilter(this._fullQuery, { matching: this.filterableAttributeValue }))
   }
 
   _clearQuery() {
@@ -57,7 +59,7 @@ Combobox.Filtering = Base => class extends Base {
   }
 
   _markQueried() {
-    this._actingCombobox.toggleAttribute("data-queried", this._isQueried)
+    this._forAllComboboxes(el => el.toggleAttribute("data-queried", this._isQueried))
   }
 
   get _isQueried() {
